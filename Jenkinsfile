@@ -1,30 +1,25 @@
-node('master')
+node('master') 
 {
-  stage('ContinuousDownload') 
-  {
-    git 'https://github.com/intelliqittrainings/maven.git'
-  } 
-  stage('ContinuousBuild')
-  {
-      sh label: '', script: 'mvn package'
-  }
-  stage('ContinuousDeployment')
-  {
-      sh label: '', script: 'scp /home/ubuntu/.jenkins/workspace/ScriptedPipeline/webapp/target/webapp.war ubuntu@172.31.42.214:/var/lib/tomcat8/webapps/qaapp.war'
-  }
-  stage('ContinuousTesting')
-  {
-      git 'https://github.com/selenium-saikrishna/FunctionalTesting.git'
-      sh label: '', script: 'java -jar /home/ubuntu/.jenkins/workspace/ScriptedPipeline/testing.jar'
-  }
-  stage('ContinuousDeliver')
-  {
-      sh label: '', script: 'scp /home/ubuntu/.jenkins/workspace/ScriptedPipeline/webapp/target/webapp.war ubuntu@172.31.82.148:/var/lib/tomcat8/webapps/prodapp.war'
-  }
-    
-    
-    
-    
-    
-    
+   stage('ContinuousDownload')
+   {
+       git 'https://github.com/intelliqittrainings/maven.git'
+   }
+   stage('ContinuousBuild')
+   {
+       sh label: '', script: 'mvn package'
+   }
+   stage('ContinuousDeployment')
+   {
+       sh label: '', script: 'scp /var/lib/jenkins/workspace/ScriptedPipeline/webapp/target/webapp.war ubuntu@172.31.10.97:/var/lib/tomcat8/webapps/qaapp.war'
+   }
+   stage('ContinuousTesting')
+   {
+       git 'https://github.com/selenium-saikrishna/FunctionalTesting.git'
+       sh label: '', script: 'echo "Testing Passed"'
+   }
+   stage('ContinousDelivery')
+   {
+       sh label: '', script: '''scp /var/lib/jenkins/workspace/ScriptedPipeline/webapp/target/webapp.war ubuntu@172.31.10.88:/var/lib/tomcat8/webapps/prodapp.war
+'''
+   }
 }
